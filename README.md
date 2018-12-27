@@ -44,7 +44,7 @@ This will show the list of processes contained in the selected assembly.
 
 ![Debugger](./README/Capture3.PNG "Debugger")
 
-### Click on the process that must be executed of verified
+### Click on the process that must be executed or verified
 
 This will show the detailed structure of the selected process.
 ![Debugger](./README/Capture4.PNG "Debugger")
