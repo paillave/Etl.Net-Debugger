@@ -2,11 +2,12 @@
 
 Tools to debug Etl.Net processes.
 
-## Developement status :construction:
+For more details about Etl.Net follow this project:  https://paillave.github.io/Etl.Net [![NuGet](https://img.shields.io/nuget/v/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net) [![NuGet](https://img.shields.io/nuget/dt/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net)
+
+## Development status :construction:
 
 > [!WARNING]
-> This tool is still under development, don't use it on production environment yet as it may not behave correctly.
-> The documentation is still being written
+> This tool is still under development, don't use it for production purpose yet as it may not behave correctly.
 
 ## Features
 
@@ -15,8 +16,6 @@ Tools to debug Etl.Net processes.
 - Execute a process by providing its input values
 - View rows issued by each node of the process
 - View the detail of a row issued by a node of the process
-
-service, Write data to REST service...
 
 > [!NOTE]
 > New requests are very welcome in the issue section
