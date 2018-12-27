@@ -1,6 +1,0 @@
-- uid: Define.Etl.Process
-  name: Define an ETL process
-- uid: Execute.Etl.Process
-  name: Execute an ETL process definition
-- uid: Catch.Traces
-  name: Catch process execution traces
