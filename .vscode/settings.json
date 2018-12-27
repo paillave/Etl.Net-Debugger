@@ -3,7 +3,8 @@
     "cSpell.words": [
         "Paillave",
         "Sankey",
-        "Upsert"
+        "Upsert",
+        "serializable"
     ],
     "todo.embedded.exclude": [
         "**/.*",
