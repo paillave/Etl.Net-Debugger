@@ -66,7 +66,9 @@ namespace Paillave.Etl.Debugger
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            Bootstrap();
+
+            if (env.IsDevelopment())
+                Bootstrap();
         }
         public async void Bootstrap()
         {

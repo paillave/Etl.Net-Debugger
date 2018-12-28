@@ -9,6 +9,7 @@ import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
 import { formatDate } from '../tools/dataAccess';
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined';
 import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
+import ErrorOutlinedIcon from '@material-ui/icons/ErrorOutlined';
 
 const styles = theme => ({
     table: {
@@ -193,10 +194,12 @@ class ReactVirtualizedTable extends React.PureComponent {
                         label: "",
                         dataKey: 'traceIcon',
                         cellRenderer: ({ rowData }) => {
-                            switch (rowData.content.type) {
-                                case "RowProcessStreamTraceContent": return (<DoneOutlinedIcon className={classes.rowIcon} />);
-                                case "CounterSummaryStreamTraceContent": return (<DoneAllOutlinedIcon className={classes.rowIcon} />);
-                            }
+                            if (rowData.content.level === 1) return (<ErrorOutlinedIcon className={classes.rowIcon} />);
+                            else
+                                switch (rowData.content.type) {
+                                    case "RowProcessStreamTraceContent": return (<DoneOutlinedIcon className={classes.rowIcon} />);
+                                    case "CounterSummaryStreamTraceContent": return (<DoneAllOutlinedIcon className={classes.rowIcon} />);
+                                }
                         }
                     },
                     {

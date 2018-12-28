@@ -17,10 +17,16 @@ namespace Paillave.Etl.Debugger
         {
             CreateWebHostBuilder(args).Build().Run();
         }
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseElectron(args)
-                .UseStartup<Startup>();
+        private static bool IsDevelopment()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return environment == EnvironmentName.Development;
+        }
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args);
+            if (!IsDevelopment()) builder = builder.UseElectron(args);
+            return builder.UseStartup<Startup>();
+        }
     }
 }

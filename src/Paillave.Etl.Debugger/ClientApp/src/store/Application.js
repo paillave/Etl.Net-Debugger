@@ -71,6 +71,7 @@ export const reducer = (state, action) => produce(state || initialState, draft =
       draft.sizeGuid = action.payload.sizeGuid;
       break;
     case executeProcessType:
+      draft.traceDetails.show = false;
       draft.executingProcess = true;
       break;
     case executionCompletedType:
