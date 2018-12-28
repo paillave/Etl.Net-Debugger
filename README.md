@@ -2,7 +2,9 @@
 
 Tools to debug Etl.Net processes.
 
-For more details about Etl.Net follow this project:  https://paillave.github.io/Etl.Net [![NuGet](https://img.shields.io/nuget/v/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net) [![NuGet](https://img.shields.io/nuget/dt/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net)
+[Download](https://github.com/paillave/Etl.Net-Debugger/releases)
+
+For more details about Etl.Net, follow this project:  https://paillave.github.io/Etl.Net [![NuGet](https://img.shields.io/nuget/v/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net) [![NuGet](https://img.shields.io/nuget/dt/Etl.Net.svg)](https://www.nuget.org/packages/Etl.Net)
 
 ## Development status :construction:
 
@@ -44,7 +46,7 @@ This will show the list of processes contained in the selected assembly.
 
 ![Debugger](./README/Capture3.PNG "Debugger")
 
-### Click on the process that must be executed of verified
+### Click on the process that must be executed or verified
 
 This will show the detailed structure of the selected process.
 ![Debugger](./README/Capture4.PNG "Debugger")
