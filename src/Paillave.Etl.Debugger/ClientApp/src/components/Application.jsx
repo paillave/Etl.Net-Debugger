@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import Sankey from './Sankey';
 import RowTraceGrid from '../containers/RowTraceGrid';
 import NodeTracesHeaders from "../containers/NodeTracesHeaders";
 import Drawer from "@material-ui/core/Drawer";
@@ -12,6 +11,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TraceDetails from "../containers/TraceDetails";
 import Divider from "@material-ui/core/Divider";
+import ProcessVisualization from "./ProcessVisualization";
 
 const drawerWidth = 600;
 
@@ -70,14 +70,8 @@ const styles = theme => ({
 
 
 class Application extends React.Component {
-
   handleNodeClick(node) {
     this.props.selectJobNode(node);
-    //console.log(node);
-  }
-
-  handleLinkClick(link) {
-    console.log(link);
   }
 
   render() {
@@ -88,40 +82,20 @@ class Application extends React.Component {
         streamToNodeLinks: links,
         nodes
       },
-      traceDetails: { show: showDrawer }
+      traceDetails: { show: showDrawer },
+      sizeGuid
     } = this.props;
 
-    var config = {
-      transitionDuration: 200,
-      getNodeKey: e => e.nodeName,
-      getNodeName: e => `${e.nodeName}:${e.typeName}`,
-      getLinkSourceKey: e => e.sourceNodeName,
-      getLinkTargetKey: e => e.targetNodeName,
-      getLinkValue: e => {
-        if (typeof e.value === "undefined") return 1;
-        else return e.value;
-      },
-      margin: { top: 10, left: 10, right: 10, bottom: 10 },
-      nodes: {
-        draggableX: true,
-        draggableY: true
-      },
-      links: {
-        unit: "row(s)"
-      },
-      tooltip: {
-        infoDiv: true,
-        labelSource: "Input:",
-        labelTarget: "Output:"
-      }
-    };
-
     return (<React.Fragment>
-      <Sankey config={config} nodes={nodes} links={links} onNodeClick={this.handleNodeClick.bind(this)} onLinkClick={this.handleLinkClick.bind(this)} sizeGuid={this.props.sizeGuid} />
+      <ProcessVisualization
+        nodes={nodes}
+        links={links}
+        onSelectJobNode={this.handleNodeClick.bind(this)}
+        // onSelectJobLink={this.handleLinkClick.bind(this)}
+        sizeGuid={sizeGuid} />
       <NodeTracesHeaders />
       <div className={classes.root}>
         <div className={classNames(classes.content, { [classes.contentShift]: showDrawer })}>
-
           <RowTraceGrid />
         </div>
         <Drawer
@@ -145,11 +119,5 @@ class Application extends React.Component {
     </React.Fragment>);
   }
 }
-
-// ApplicationToolBar.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   theme: PropTypes.object.isRequired,
-//   onSwitchDrawer: PropTypes.func.isRequired,
-// };
 
 export default withStyles(styles, { withTheme: true })(Application);

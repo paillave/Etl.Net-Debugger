@@ -55,7 +55,7 @@ export const actionCreators = {
   addTraces: (traces) => ({ type: addTracesType, payload: { traces } }),
   hideTraceDetails: () => ({ type: hideTraceDetailsType }),
   showTraceDetails: (trace) => ({ type: showTraceDetailsType, payload: { trace } }),
-  receiveProcessDefinition: (processDefinition) => ({ type: receiveProcessDefinitionType, payload: { processDefinition } }),
+  receiveProcessDefinition: (processDefinition, isRefreshBeforeExecute) => ({ type: receiveProcessDefinitionType, payload: { processDefinition, isRefreshBeforeExecute } }),
   showProcessParametersDialog: () => ({ type: switchProcessParametersDialogType, payload: { show: true } }),
   hideProcessParametersDialog: () => ({ type: switchProcessParametersDialogType, payload: { show: false } }),
   executeProcess: () => ({ type: executeProcessType }),
@@ -119,6 +119,9 @@ export const reducer = (state, action) => produce(state || initialState, draft =
         else
           draft.traces[trace.nodeName].unshift(trace);
         let counter = draft.traces[trace.nodeName].length;
+        if (trace.content.level === 1) {
+          draft.processDefinition.nodes.filter(i => i.nodeName === trace.nodeName).forEach(i => i.errorCount = (i.errorCount || 0) + 1);
+        }
         if (trace.content.type === "RowProcessStreamTraceContent") {
           draft.processDefinition.nodes.filter(i => i.nodeName === trace.nodeName).forEach(i => i.rowCount = (i.rowCount || 0) + 1);
           draft.processDefinition.streamToNodeLinks.filter(i => i.sourceNodeName === trace.nodeName).forEach(i => i.value = (i.value || 0) + 1);
@@ -135,6 +138,13 @@ export const reducer = (state, action) => produce(state || initialState, draft =
     case receiveProcessDefinitionType:
       draft.loadingProcessDefinition = false;
       draft.processDefinition = action.payload.processDefinition;
+      if (action.payload.isRefreshBeforeExecute) {
+        draft.processDefinition.nodes.forEach(i => {
+          i.errorCount = 0;
+          i.rowCount = 0;
+        });
+        draft.processDefinition.streamToNodeLinks.forEach(i => i.value = 0);
+      }
       break;
     default:
       break;

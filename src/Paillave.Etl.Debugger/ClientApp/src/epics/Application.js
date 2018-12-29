@@ -43,7 +43,7 @@ const executeProcess = (action$, state$) => {
                 queryParams: state.app.process,
             }).pipe(
                 fetchData("Application/GetEstimatedExecutionPlan"),
-                map(i => actionCreators.receiveProcessDefinition(i))
+                map(i => actionCreators.receiveProcessDefinition(i, true))
             );
             return merge(processDefinitionAction$,
                 processDefinitionAction$.pipe(

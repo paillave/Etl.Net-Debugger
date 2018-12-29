@@ -1,6 +1,7 @@
 {
     "dotnet-test-explorer.testProjectPath": "**/*Tests.csproj",
     "cSpell.words": [
+        "Guid",
         "Paillave",
         "Sankey",
         "Upsert",

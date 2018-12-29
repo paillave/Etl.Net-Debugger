@@ -60,7 +60,7 @@ This will show a form were values of properties of the input config type can be 
 
 ![Debugger](./README/Capture5.PNG "Debugger")
 
-### Click on 'EXECUTE'
+### Click on `EXECUTE`
 
 This will run the process by providing real time evolution of the process. The quantity of rows issued by each node will impact the thickness of the matching stream representation.
 
