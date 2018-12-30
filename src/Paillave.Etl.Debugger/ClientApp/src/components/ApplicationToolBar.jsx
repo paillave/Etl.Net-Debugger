@@ -28,28 +28,40 @@ const styles = theme => ({
 
 class ApplicationToolBar extends React.Component {
   render() {
-    const { classes, theme, showSelectProcessDialog, showProcessParametersDialog, process } = this.props;
-
+    const {
+      classes,
+      theme,
+      showSelectProcessDialog,
+      showProcessParametersDialog,
+      process,
+      loadingProcessDefinition,
+      executingProcess,
+      processSelectionDialog: {
+        loadingProcesses
+      }
+    } = this.props;
+    const actionsLocked = loadingProcessDefinition || executingProcess || loadingProcesses;
     return (
       <Toolbar>
         <Typography variant="h6" color="inherit" noWrap>
           Etl.Net debugger
         </Typography>
         <div className={classes.grow} />
-        <Tooltip title="Open an assembly and select the process to execute">
-          <Button color="inherit" onClick={showSelectProcessDialog} className={classNames(classes.menuButton, classes.button)}>
-            <FolderOpenIcon className={classes.leftIcon} />
-            Select Process...
+
+          <Tooltip title="Open an assembly and select the process to execute">
+            <Button disabled={actionsLocked} color="inherit" onClick={showSelectProcessDialog} className={classNames(classes.menuButton, classes.button)}>
+              <FolderOpenIcon className={classes.leftIcon} />
+              Select Process...
         </Button>
-        </Tooltip>
-        {process &&
-          <Tooltip title="Execute the selected process by providing its parameter values">
-            <IconButton
-              onClick={showProcessParametersDialog}
-              color="inherit">
-              <PlayArrowIcon />
-            </IconButton>
-          </Tooltip>}
+          </Tooltip>
+          {process &&
+            <Tooltip title="Execute the selected process by providing its parameter values">
+              <IconButton disabled={actionsLocked} 
+                onClick={showProcessParametersDialog}
+                color="inherit">
+                <PlayArrowIcon />
+              </IconButton>
+            </Tooltip>}
       </Toolbar>
     );
   }

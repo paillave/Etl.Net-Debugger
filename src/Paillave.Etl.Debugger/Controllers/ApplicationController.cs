@@ -27,7 +27,7 @@ namespace Paillave.Etl.Debugger.Controllers
         [ProducesResponseType(200)]
         public ActionResult<List<ProcessDescriptionSummary>> GetAssemblyProcesses(string assemblyPath)
         {
-            return new Inspector(assemblyPath)
+            return new EtlNetContext(assemblyPath)
                 .Processes
                 .Select(i => i.Summary)
                 .ToList();
@@ -37,14 +37,14 @@ namespace Paillave.Etl.Debugger.Controllers
         [ProducesResponseType(200)]
         public ActionResult<JobDefinitionStructure> GetEstimatedExecutionPlan(string assemblyFilePath, string className, string @namespace, string streamTransformationName)
         {
-            return new Inspector(assemblyFilePath).GetJobDefinitionStructure(className, @namespace, streamTransformationName);
+            return new EtlNetContext(assemblyFilePath).GetJobDefinitionStructure(className, @namespace, streamTransformationName);
         }
 
         [HttpPost("[action]")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<ExecutionStatus>> ExecuteProcess([FromQuery]string assemblyFilePath, [FromQuery]string className, [FromQuery]string @namespace, [FromQuery]string streamTransformationName, [FromBody]Dictionary<string, string> parameters)
         {
-            return await new Inspector(assemblyFilePath).ExecuteAsync(className, @namespace, streamTransformationName, parameters, te =>
+            return await new EtlNetContext(assemblyFilePath).ExecuteAsync(className, @namespace, streamTransformationName, parameters, te =>
             {
                 if (te.Content.Level == TraceLevel.Error)
                     Console.WriteLine(te.Content);
