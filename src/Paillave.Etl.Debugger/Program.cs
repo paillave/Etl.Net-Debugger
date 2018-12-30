@@ -25,7 +25,8 @@ namespace Paillave.Etl.Debugger
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var builder = WebHost.CreateDefaultBuilder(args);
-            if (!IsDevelopment()) builder = builder.UseElectron(args);
+            if (!IsDevelopment())
+                builder = builder.UseElectron(args);
             return builder.UseStartup<Startup>();
         }
     }

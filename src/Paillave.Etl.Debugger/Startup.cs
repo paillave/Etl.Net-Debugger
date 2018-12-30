@@ -67,7 +67,7 @@ namespace Paillave.Etl.Debugger
                 }
             });
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
                 Bootstrap();
         }
         public async void Bootstrap()
