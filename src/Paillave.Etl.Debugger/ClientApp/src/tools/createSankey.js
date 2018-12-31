@@ -63,6 +63,7 @@ function createSankey(containerNode, configSankey, dataSankey) {
 
     var sankey = d3Sankey
         .sankey()
+        .nodeAlign(d3Sankey.sankeyJustify)
         .nodeWidth(15)
         .nodePadding(10)
         .extent([[0, 0], [dimensions.width, dimensions.height]]);

@@ -15,6 +15,7 @@ export const keepParametersType = 'KEEP_PARAMETERS';
 export const executionCompletedType = 'EXECUTION_COMPLETED';
 export const selectJobNodeType = 'SELECT_JOB_NODE';
 export const windowResizeType = 'WINDOW_RESIZE';
+export const setVisualizationModeType = 'SET_VISUALIZATION_MODE';
 
 
 const initialState = {
@@ -41,7 +42,8 @@ const initialState = {
     nodes: []
   },
   selectedNode: undefined,
-  sizeGuid: v1()
+  sizeGuid: v1(),
+  visualizationMode: 'S'
 };
 
 export const actionCreators = {
@@ -62,11 +64,15 @@ export const actionCreators = {
   executionCompleted: () => ({ type: executionCompletedType }),
   keepParameters: (parameters) => ({ type: keepParametersType, payload: { parameters } }),
   selectJobNode: (selectedNode) => ({ type: selectJobNodeType, payload: { selectedNode } }),
-  windowResize: () => ({ type: windowResizeType, payload: { sizeGuid: v1() } })
+  windowResize: () => ({ type: windowResizeType, payload: { sizeGuid: v1() } }),
+  setVisualizationMode: (mode) => ({ type: setVisualizationModeType, payload: { mode } })
 };
 
 export const reducer = (state, action) => produce(state || initialState, draft => {
   switch (action.type) {
+    case setVisualizationModeType:
+      draft.visualizationMode = action.payload.mode;
+      break;
     case windowResizeType:
       draft.sizeGuid = action.payload.sizeGuid;
       break;

@@ -1,87 +1,108 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Sankey from './Sankey';
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import ProcessChartVisualization from "./ProcessChartVisualization";
+import ProcessGridVisualization from "./ProcessGridVisualization";
+
+function TabContainer({ children, dir }) {
+    return (
+        <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+            {children}
+        </Typography>
+    );
+}
+
+const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: "500",
+    },
+});
 
 class ProcessVisualization extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 0,
+        };
+    }
 
-    handleNodeClick(node) {
+    handleChange(event, value) {
+        if (this.props.onModeChanged) {
+            this.props.onModeChanged(value === 0 ? "S" : "G")
+        }
+        else {
+            this.setState({ value });
+        }
+    };
+
+    handleChangeIndex(index) {
+        if (this.props.onModeChanged) {
+            this.props.onModeChanged(index === 0 ? "S" : "G")
+        }
+        else {
+            this.setState({ value: index });
+        }
+    };
+
+    handleSelectJobNode(node) {
         if (this.props.onSelectJobNode)
             this.props.onSelectJobNode(node);
     }
 
-    handleLinkClick(link) {
+    handleSelectJobLink(node) {
         if (this.props.onSelectJobLink)
-            this.props.onSelectJobLink(link);
+            this.props.onSelectJobLink(node);
     }
 
     render() {
-        const {
-            links,
-            nodes,
-            sizeGuid
-        } = this.props;
-
-        var config = {
-            nodeClasses: ["sankey-node-error"],
-            linkClasses: ["sankey-link-empty-run", "sankey-link-filled-run"],
-            transitionDuration: 200,
-            getNodeKey: e => e.nodeName,
-            getNodeName: e => `${e.nodeName}:${e.typeName}`,
-            getLinkSourceKey: e => e.sourceNodeName,
-            getLinkTargetKey: e => e.targetNodeName,
-            isNodeClassed: (node, className) => {
-                switch (className) {
-                    case "sankey-node-error":
-                        return !!node.errorCount;
-                    default:
-                        return false;
-                }
-            },
-            isLinkClassed: (link, className) => {
-                switch (className) {
-                    case "sankey-link-empty-run":
-                        return link.value === 0;
-                    case "sankey-link-filled-run":
-                        return !!link.value;
-                    default:
-                        return false;
-                }
-            },
-            getLinkValue: e => {
-                if (!e.value) return 1;
-                else return e.value;
-            },
-            margin: { top: 10, left: 10, right: 10, bottom: 10 },
-            nodes: {
-                draggableX: true,
-                draggableY: true
-            },
-            links: {
-                unit: "row(s)"
-            },
-            tooltip: {
-                infoDiv: true,
-                labelSource: "Input:",
-                labelTarget: "Output:"
-            }
-        };
-
+        const { classes, theme, nodes, links, sizeGuid, mode, selectedNode } = this.props;
+        let selectedTab;
+        if (this.props.onModeChanged) {
+            selectedTab = mode === "S" ? 0 : 1;
+        }
+        else {
+            selectedTab = this.state.value;
+        }
         return (
-            <Sankey
-                config={config}
-                nodes={nodes}
-                links={links}
-                onNodeClick={this.handleNodeClick.bind(this)}
-                onLinkClick={this.handleLinkClick.bind(this)}
-                sizeGuid={sizeGuid} />
+            <div className={classes.root}>
+                <AppBar position="static" color="default">
+                    <Tabs
+                        value={selectedTab}
+                        onChange={this.handleChange.bind(this)}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        fullWidth>
+                        <Tab label="Sankey Chart" />
+                        <Tab label="Grid" />
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={selectedTab}
+                    onChangeIndex={this.handleChangeIndex.bind(this)}>
+                    <TabContainer dir={theme.direction}>
+                        <ProcessChartVisualization
+                            nodes={nodes}
+                            links={links}
+                            onSelectJobNode={this.handleSelectJobNode.bind(this)}
+                            onSelectJobLink={this.handleSelectJobLink.bind(this)}
+                            sizeGuid={sizeGuid} />
+                    </TabContainer>
+                    <TabContainer dir={theme.direction}>
+                        <ProcessGridVisualization
+                            nodes={nodes}
+                            onSelectJobNode={this.handleSelectJobNode.bind(this)} 
+                            selectedNode={selectedNode}/>
+                    </TabContainer>
+                </SwipeableViews>
+            </div>
         );
     }
 }
 
-// ApplicationToolBar.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   theme: PropTypes.object.isRequired,
-//   onSwitchDrawer: PropTypes.func.isRequired,
-// };
-
-export default ProcessVisualization;
+export default withStyles(styles, { withTheme: true })(ProcessVisualization);

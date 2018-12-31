@@ -11,6 +11,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TraceDetails from "../containers/TraceDetails";
 import Divider from "@material-ui/core/Divider";
+import ProcessChartVisualization from "./ProcessChartVisualization";
 import ProcessVisualization from "./ProcessVisualization";
 
 const drawerWidth = 600;
@@ -73,7 +74,9 @@ class Application extends React.Component {
   handleNodeClick(node) {
     this.props.selectJobNode(node);
   }
-
+  handleModeChanged(mode) {
+    this.props.setVisualizationMode(mode);
+  }
   render() {
     const {
       classes,
@@ -83,14 +86,25 @@ class Application extends React.Component {
         nodes
       },
       traceDetails: { show: showDrawer },
-      sizeGuid
+      sizeGuid,
+      visualizationMode,
+      selectedNode
     } = this.props;
 
     return (<React.Fragment>
-      <ProcessVisualization
+      {/* <ProcessChartVisualization
         nodes={nodes}
         links={links}
         onSelectJobNode={this.handleNodeClick.bind(this)}
+        // onSelectJobLink={this.handleLinkClick.bind(this)}
+        sizeGuid={sizeGuid} /> */}
+      <ProcessVisualization
+        mode={visualizationMode}
+        nodes={nodes}
+        links={links}
+        onModeChanged={this.handleModeChanged.bind(this)}
+        onSelectJobNode={this.handleNodeClick.bind(this)}
+        selectedNode={selectedNode}
         // onSelectJobLink={this.handleLinkClick.bind(this)}
         sizeGuid={sizeGuid} />
       <NodeTracesHeaders />
