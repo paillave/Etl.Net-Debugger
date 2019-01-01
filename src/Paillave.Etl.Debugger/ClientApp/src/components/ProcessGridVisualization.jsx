@@ -78,7 +78,7 @@ class ProcessGridVisualization extends React.Component {
                     label: "",
                     dataKey: 'positionIcon',
                     cellRenderer: ({ rowData }) => {
-                        if (!selectedNode || !links) return;
+                        if (!links) return;
                         let isRootSource = true;
                         let isFinalTarget = true;
                         for (let index = 0; index < links.length; index++) {
