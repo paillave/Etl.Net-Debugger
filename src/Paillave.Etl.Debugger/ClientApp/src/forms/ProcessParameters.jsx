@@ -29,9 +29,10 @@ const renderTextField = ({
     ...custom
 }) => (
         <TextField
-            label={label}
+            label={label.replace(/([a-z])([A-Z])/g, '$1 $2')}
             className={classes.textField}
             error={touched && invalid}
+            fullWidth={true}
             helperText={touched && error}
             margin="normal"
             {...input}

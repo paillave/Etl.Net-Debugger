@@ -96,6 +96,7 @@ class ProcessVisualization extends React.Component {
                     <TabContainer dir={theme.direction}>
                         <ProcessGridVisualization
                             nodes={nodes}
+                            links={links}
                             onSelectJobNode={this.handleSelectJobNode.bind(this)} 
                             selectedNode={selectedNode}/>
                     </TabContainer>

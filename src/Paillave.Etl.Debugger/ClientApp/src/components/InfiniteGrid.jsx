@@ -6,10 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
-import { formatDate } from '../tools/dataAccess';
-import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined';
-import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
-import ErrorOutlinedIcon from '@material-ui/icons/ErrorOutlined';
 
 const styles = theme => ({
     table: {
@@ -50,13 +46,13 @@ const styles = theme => ({
 class MuiVirtualizedTable extends React.PureComponent {
     getRowClassName(val) {
         const { index } = val;
-        const rowData = this.props.rowGetter({ index });
-        const { classes, rowClassName, onRowClick, selectedData } = this.props;
+        const { classes, rowClassName, onRowClick, onIsSelectedData, rowGetter, onGetRowClasses } = this.props;
+        const rowData = rowGetter({ index });
         let customRowClassNames;
-        if (this.props.onGetRowClasses)
-            customRowClassNames = this.props.onGetRowClasses(rowData);
+        if (rowData && onGetRowClasses)
+            customRowClassNames = onGetRowClasses(rowData);
         let selectedClass;
-        if (selectedData && selectedData === rowData)
+        if (rowData && onIsSelectedData && onIsSelectedData(rowData))
             selectedClass = classes.tableRowSelected;
         return classNames(classes.tableRow, classes.flexContainer, rowClassName, {
             [classes.tableRowHover]: index !== -1 && onRowClick != null,
@@ -189,7 +185,11 @@ class ReactVirtualizedTable extends React.PureComponent {
     }
     handleGetRowClasses(rowData) {
         if (this.props.onGetRowClasses)
-            this.props.onGetRowClasses(rowData);
+            return this.props.onGetRowClasses(rowData);
+    }
+    handleIsSelectedData(rowData) {
+        if (this.props.onIsSelectedData)
+            return this.props.onIsSelectedData(rowData);
     }
     render() {
         const { classes, height, columns, rowCount, selectedData } = this.props;
@@ -197,8 +197,8 @@ class ReactVirtualizedTable extends React.PureComponent {
             <WrappedVirtualizedTable
                 // selectedIndex={this.getSelectedIndex.bind(this)()}
                 rowCount={rowCount}
-                selectedData={selectedData}
-                onGetRowClasses={this.handleGetRowClasses(this)}
+                onIsSelectedData={this.handleIsSelectedData.bind(this)}
+                onGetRowClasses={this.handleGetRowClasses.bind(this)}
                 rowGetter={this.handleGetRowData.bind(this)}
                 onRowClick={this.handleRowClick.bind(this)}
                 columns={columns}

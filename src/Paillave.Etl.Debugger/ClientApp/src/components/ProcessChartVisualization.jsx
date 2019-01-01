@@ -26,7 +26,7 @@ class ProcessChartVisualization extends React.Component {
             linkClasses: ["sankey-link-empty-run", "sankey-link-filled-run"],
             transitionDuration: 200,
             getNodeKey: e => e.nodeName,
-            getNodeName: e => `${e.nodeName}:${e.typeName}`,
+            getNodeName: e => `${e.nodeName}: ${e.typeName.replace(/([a-z])([A-Z])/g, '$1 $2')}`,
             getLinkSourceKey: e => e.sourceNodeName,
             getLinkTargetKey: e => e.targetNodeName,
             isNodeClassed: (node, className) => {

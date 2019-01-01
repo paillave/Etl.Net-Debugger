@@ -61,7 +61,7 @@ class NodeTracesHeaders extends React.PureComponent {
                         {selectedNode && <React.Fragment>
                             <SettingsIcon />
                             <div className={classes.menuTitle}>
-                                <Typography variant="h6" color="inherit" className={classes.grow}>{selectedNode.typeName}</Typography>
+                                <Typography variant="h6" color="inherit" className={classes.grow}>{selectedNode.typeName.replace(/([a-z])([A-Z])/g, '$1 $2')}</Typography>
                                 {selectedNode.rowCount && <Typography variant="body1" color="inherit" className={classes.grow}>{selectedNode.rowCount} row(s)</Typography>}
                             </div>
                         </React.Fragment>}

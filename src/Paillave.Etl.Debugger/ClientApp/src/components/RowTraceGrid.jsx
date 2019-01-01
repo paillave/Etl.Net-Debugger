@@ -25,6 +25,11 @@ class ReactVirtualizedTable extends React.PureComponent {
     handleRowClick(data) {
         this.props.showTraceDetails(data);
     }
+    handleIsSelectedData(trace) {
+        if (this.props.traceDetails.selectedTrace)
+            return trace.guid === this.props.traceDetails.selectedTrace.guid;
+        return false;
+    }
     render() {
         const { classes } = this.props;
 
@@ -32,7 +37,7 @@ class ReactVirtualizedTable extends React.PureComponent {
             rowCount={this.getRowCount.bind(this)()}
             onGetRowData={this.handleGetRowData.bind(this)}
             onRowClick={this.handleRowClick.bind(this)}
-            selectedData={this.props.traceDetails.selectedTrace}
+            onIsSelectedData={this.handleIsSelectedData.bind(this)}
             columns={[
                 {
                     width: 50,

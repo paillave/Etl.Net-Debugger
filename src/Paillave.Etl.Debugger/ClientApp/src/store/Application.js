@@ -119,6 +119,7 @@ export const reducer = (state, action) => produce(state || initialState, draft =
       break;
     case addTracesType:
       action.payload.traces.forEach(trace => {
+        trace.guid = v1();
         convertToDate(trace);
         if (!draft.traces[trace.nodeName])
           draft.traces[trace.nodeName] = [trace];

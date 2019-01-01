@@ -32,6 +32,7 @@ const renderTextField = ({
             className={classes.textField}
             error={touched && invalid}
             helperText={touched && error}
+            fullWidth={true}
             margin="normal"
             {...input}
             {...custom}
