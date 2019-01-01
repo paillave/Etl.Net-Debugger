@@ -63,6 +63,7 @@ function createSankey(containerNode, configSankey, dataSankey) {
 
     var sankey = d3Sankey
         .sankey()
+        .nodeAlign(d3Sankey.sankeyJustify)
         .nodeWidth(15)
         .nodePadding(10)
         .extent([[0, 0], [dimensions.width, dimensions.height]]);
@@ -90,6 +91,25 @@ function createSankey(containerNode, configSankey, dataSankey) {
         .attr("class", "d3-tip d3-tip-nodes")
         .offset([-10, 0]);
 
+    function setLinkClasses(d3Link) {
+        if (configSankey.linkClasses) {
+            for (let index = 0; index < configSankey.linkClasses.length; index++) {
+                const linkClass = configSankey.linkClasses[index];
+                d3Link = d3Link.classed(linkClass, l => configSankey.isLinkClassed(linksIdToDataDictionary[l.id], linkClass));
+            }
+        }
+        return d3Link;
+    }
+
+    function setNodeClasses(d3Node) {
+        if (configSankey.nodeClasses) {
+            for (let index = 0; index < configSankey.nodeClasses.length; index++) {
+                const nodeClass = configSankey.nodeClasses[index];
+                d3Node = d3Node.classed(nodeClass, l => configSankey.isNodeClassed(nodesIdxToDataDictionary[l.id], nodeClass));
+            }
+        }
+        return d3Node;
+    }
     function _formatValueTooltip(val) {
         if (configSankey.links.formatValue)
             return configSankey.links.formatValue(val);
@@ -214,8 +234,10 @@ function createSankey(containerNode, configSankey, dataSankey) {
         .enter()
         .append("path")
         .on("click", onLinkClick)
-        .classed("sk-link", true)
-        .attr("d", path)
+        .classed("sk-link", true);
+
+    link = setLinkClasses(link);
+    link = link.attr("d", path)
         .style("stroke-width", l => Math.max(1, l.width) + "px")
         .sort((a, b) => b.width - a.width);
     if (configSankey.tooltip.infoDiv)
@@ -252,6 +274,8 @@ function createSankey(containerNode, configSankey, dataSankey) {
         .classed("sk-node", true)
         // .attr("class", "sk-node")
         .attr("transform", d => `translate(${d.x0},${d.y0})`);
+    node = setNodeClasses(node);
+
     if (configSankey.tooltip.infoDiv)
         node
             .on("mousemove", tipNodes.move)
@@ -260,7 +284,7 @@ function createSankey(containerNode, configSankey, dataSankey) {
     else
         node.append("title").text(d => `${d.name}\n${_formatValueTooltip(d.value)}`);
     //Drag nodes
-    if (_nodes_draggableX || _nodes_draggableY)
+    if (_nodes_draggableX || _nodes_draggableY) {
         node.call(
             d3
                 .drag()
@@ -272,9 +296,11 @@ function createSankey(containerNode, configSankey, dataSankey) {
                 })
                 .on("drag", _dragmove)
         );
-    else
+    }
+    else {
         node
-            .on("click", onNodeClick)
+            .on("click", onNodeClick);
+    }
 
     function onNodeClick(d) {
         if (configSankey.onNodeClick)
@@ -314,17 +340,26 @@ function createSankey(containerNode, configSankey, dataSankey) {
                     .duration(configSankey.transitionDuration);
             else return selection;
         }
+
+        let link = svg
+            .selectAll(".sk-link");
+
+        link = setLinkClasses(link);
+
         addTransition(
-            svg
-                .selectAll(".sk-link")
+            link
                 .data(dataUpdated.links, d => d.id)
                 .sort((a, b) => b.width - a.width))
             .attr("d", path)
             .style("stroke-width", l => Math.max(1, l.width) + "px");
 
+        let node = svg
+            .selectAll(".sk-node");
+
+        node = setNodeClasses(node);
+
         addTransition(
-            svg
-                .selectAll(".sk-node")
+            node
                 .data(dataUpdated.nodes, d => d.name))
             .attr("transform", d => `translate(${d.x0},${d.y0})`);
 
@@ -337,7 +372,7 @@ function createSankey(containerNode, configSankey, dataSankey) {
 
     //Update value of links, for call the function '_updateLinksValues' transition values (old to new)
     //This function only update values from links
-    
+
     function updateLinks(links) {
         links.forEach(link => {
             let sourceId = nodesKeyToIdDictionary[configSankey.getLinkSourceKey(link)];

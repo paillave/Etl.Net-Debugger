@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Paillave.Etl.Core;
 using Paillave.Etl.Core.Streams;
@@ -11,9 +12,9 @@ using Paillave.Etl.Extensions;
 
 namespace Paillave.Etl.Debugger.Coordinator
 {
-    public class Inspector
+    public class EtlNetContext : MarshalByRefObject, IEtlNetContext
     {
-        public Inspector(string assemblyPath)
+        public EtlNetContext(string assemblyPath)
         {
             var assembly = Assembly.LoadFrom(assemblyPath);
             this.Processes = GetEtlList(assembly, assemblyPath);
@@ -55,7 +56,7 @@ namespace Paillave.Etl.Debugger.Coordinator
             // .CreateInstance()
             return processRunner.ExecuteWithNoFaultAsync(ob.CreateInstance(), traceProcessDefinition);
         }
-        public static List<ProcessDescription> GetEtlList(Assembly assembly, string assemblyPath = null) => assembly.DefinedTypes
+        private static List<ProcessDescription> GetEtlList(Assembly assembly, string assemblyPath = null) => assembly.DefinedTypes
                 .SelectMany(i => i.DeclaredMethods)
                 .Select(methodInfo =>
                 {

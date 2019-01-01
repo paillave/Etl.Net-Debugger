@@ -46,7 +46,7 @@ class OpenProcessDialog extends React.Component {
             Drop the assembly here or click to browse
           </Typography>
         </DropzoneFileArea>
-          <Typography>
+          <Typography style={{ marginTop: 20 }}>
             {assemblyPath}
           </Typography>
         </React.Fragment>}

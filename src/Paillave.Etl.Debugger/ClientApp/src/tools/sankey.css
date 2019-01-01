@@ -20,6 +20,10 @@
   cursor: move;
   shape-rendering: crispEdges;
 }
+.sk-node.sankey-node-error rect{
+  fill: red;
+  stroke: red;
+}
 .sk-node text {
   pointer-events: none;
   font-size: 13px;
@@ -30,6 +34,12 @@
   stroke-opacity: 0.16;
   transition-property: stroke-opacity;
   transition-duration: 0.5s;
+}
+.sk-link.sankey-link-empty-run {
+  stroke: transparent;
+}
+.sk-link.sankey-link-filled-run {
+  stroke: green;
 }
 .sk-link:hover {
   stroke-opacity: 0.5;
