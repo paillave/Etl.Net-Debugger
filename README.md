@@ -1,3 +1,8 @@
+# :warning: This project is discontinued. 
+
+The goal is not to abandon it. In some months **a cross platform visual ETL will start to be developed** using [Etl.Net](https://github.com/paillave/Etl.Net) as the execution engine. The goal is to have, at the end of the day, a **FULL** open source ETL with never seen features, dramatically easy to extend and... cherry on the cake... that will be permit developers **to integrate the designer into their react/dotnet core web applications!**
+
+
 # Etl.Net Debugger [![Join the chat at https://gitter.im/Etl-Net/Lobby](https://badges.gitter.im/Etl-Net/Lobby.svg)](https://gitter.im/Etl-Net/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Tools to debug Etl.Net processes.
